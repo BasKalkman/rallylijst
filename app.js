@@ -23,11 +23,18 @@ app.use(express.static(__dirname +'/public'))
 // SEED
 // seed.seedDB()
 
+var test = {
+    log: function(x) {
+        console.log(x)
+    }
+}
+
 // ROUTES
 app.get('/', (req, res) => {
     res.render('index')
 })
 
+// DEELNEMERSLIJST
 app.get('/deelnemers', (req, res) => {
     Deelnemer.find({})
         .sort({name: 1})
@@ -37,6 +44,17 @@ app.get('/deelnemers', (req, res) => {
         })
 })
 
+app.get('/indeling', (req, res) => {
+    Deelnemer.find({present: 'aanwezig'}, (err, deelnemers) => {
+        if (err) {
+            console.log('Er ging iets mis met aanwezige deelnemers');
+        } else {
+            res.render('indeling', {deelnemers: deelnemers, test: test})
+        }
+    })
+})
+
+// SHOW - Overzicht deelnemers gegevens
 app.get('/deelnemer/:id', (req, res) => {
     Deelnemer.findOne({_id: req.params.id}, (err, deelnemer) => {
         if (err) { console.log('Fout bij ophalen deelnemer') }
@@ -44,6 +62,7 @@ app.get('/deelnemer/:id', (req, res) => {
     })
 })
 
+// UPDATE DEELNEMER - Naam, leeftijd, vooral aanwezigheid
 app.put('/deelnemer/:id', (req, res) => {
     Deelnemer.findOneAndUpdate({ _id: req.params.id}, req.body.deelnemer, (err, result) => {
         if (err) {
