@@ -1,0 +1,62 @@
+<% include ./partials/header %>
+
+<h3><%= deelnemer.name %></h3>
+
+<form action="/deelnemer/<%= deelnemer._id %>?_method=PUT" method="post">
+    <div class="form-group">
+        Naam: <input class="form-control" type="text" name="deelnemer[name]" id="deelnemer" value="<%= deelnemer.name %>" />
+    </div>
+
+    <div class="form-group">
+        Leeftijd: <input class="form-control" type="number" name="deelnemer[age]" id="leeftijd" value="<%= deelnemer.age %>" />
+    </div>
+
+    <div class="form-check">
+        Geslacht:<br>
+        <input class="form-check-input" type="radio" name="deelnemer[gender]" id="genderMale" value="male" <% if (deelnemer.gender === 'male') { %> checked <% } %>>
+        <label class="form-check-label" for="genderMale">
+            Man
+        </label>
+        <br>
+        <input class="form-check-input" type="radio" name="deelnemer[gender]" id="genderFemale" value="female" <% if (deelnemer.gender === 'female') { %> checked <% } %>>
+        <label class="form-check-label" for="genderFemale">
+            Vrouw
+        </label>
+    </div>
+    <br>
+    <div class="form-check">
+        Rijder/Bijrijder:<br>
+        <input class="form-check-input" type="radio" name="deelnemer[driver]" id="driverYes" value="Rijder" <% if (deelnemer.driver === 'Rijder') { %> checked <% } %>>
+        <label class="form-check-label" for="driverYes">
+            Rijder
+        </label>
+        <br>
+        <input class="form-check-input" type="radio" name="deelnemer[driver]" id="driverNo" value="Bijrijder" <% if (deelnemer.driver === 'Bijrijder') { %> checked <% } %>>
+        <label class="form-check-label" for="driverNo">
+            Bijrijder
+        </label>
+    </div>
+
+    <br>
+
+    <div class="form-group">
+        Stoelen: <input class="form-control" type="number" name="deelnemer[seats]" id="stoelen" value="<%= deelnemer.seats %>" />
+    </div>
+
+    <div class="form-group">
+        Aanwezigheid:
+        <select class="custom-select" name="deelnemer[present]">
+            <option value="--" <% if (deelnemer.present === '--') { %> selected <% } %>>--</option>
+            <option value="aanwezig" <% if (deelnemer.present === 'aanwezig') { %> selected <% } %>>Aanwezig</option>
+            <option value="afwezig" <% if (deelnemer.present === 'afwezig') { %> selected <% } %>>Afwezig</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <input class="btn btn-primary" type="submit" value="Update">
+    </div>
+
+
+</form>
+
+<% include ./partials/footer %>

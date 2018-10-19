@@ -1,0 +1,30 @@
+<% include ./partials/header %>
+
+
+<h3>Deelnemerslijst</h3>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>Naam</th>
+            <th>Leeftijd</th>
+            <th>Aanwezig</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+    <% deelnemers.forEach(function(deelnemer) { %>
+        <tr>
+            <td><%= deelnemer.name %></td>
+            <td><%= deelnemer.age %></td>
+            <td><%= deelnemer.present %></td>
+            <td><a href="/deelnemer/<%= deelnemer._id %>">Wijzig</a></td>
+        </tr>
+    <% }) %>
+    </tbody>
+
+
+</table>
+
+    
+<% include ./partials/footer %>

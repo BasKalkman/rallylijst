@@ -25,9 +25,32 @@ app.use(express.static(__dirname +'/public'))
 
 // ROUTES
 app.get('/', (req, res) => {
-    Deelnemer.find({}, (err, deelnemers) => {
-        if (err) {console.log('Kan deelnemers niet overzetten')}
-        else {res.render('index', {deelnemers: deelnemers}) }
+    res.render('index')
+})
+
+app.get('/deelnemers', (req, res) => {
+    Deelnemer.find({})
+        .sort({name: 1})
+        .exec(function(err, deelnemers) {
+            if (err) {console.log('Kan deelnemers niet overzetten')}
+            else {res.render('deelnemerslijst', {deelnemers: deelnemers}) }
+        })
+})
+
+app.get('/deelnemer/:id', (req, res) => {
+    Deelnemer.findOne({_id: req.params.id}, (err, deelnemer) => {
+        if (err) { console.log('Fout bij ophalen deelnemer') }
+        else { res.render('deelnemer', {deelnemer: deelnemer})}
+    })
+})
+
+app.put('/deelnemer/:id', (req, res) => {
+    Deelnemer.findOneAndUpdate({ _id: req.params.id}, req.body.deelnemer, (err, result) => {
+        if (err) {
+            console.log('Kon niet wijzigen'); 
+        } else {
+            res.redirect('/deelnemers');
+        }
     })
 })
 
