@@ -1,3 +1,7 @@
+// PRODUCTION TODO
+// - Remove this
+// - In Deelnemer model, present default is --
+
 // MODULES
 var express = require('express'),
   app = express(),
@@ -26,12 +30,11 @@ app.use(express.static(__dirname + '/public'));
 
 // SEED
 // seed.seedDB();
-
-var test = {
-  log: function(x) {
-    console.log(x);
-  }
-};
+// RESEED
+app.get('/reseed', (req, res) => {
+  seed.seedDB();
+  res.redirect('/indeling');
+});
 
 // ROUTES
 app.get('/', (req, res) => {
@@ -57,7 +60,7 @@ app.get('/indeling', (req, res) => {
     if (err) {
       console.log('Er ging iets mis met aanwezige deelnemers');
     } else {
-      res.render('indeling', { deelnemers: deelnemers, test: test });
+      res.render('indeling', { deelnemers: deelnemers });
     }
   });
 });
@@ -84,7 +87,7 @@ app.put('/deelnemer/:id', (req, res) => {
   });
 });
 
-// TEST OPHALEN
+// OPHALEN
 app.get('/ophalen', (req, res) => {
   Deelnemer.find({ present: 'aanwezig' }, (err, deelnemers) => {
     if (err) {

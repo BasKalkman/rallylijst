@@ -6,7 +6,7 @@ module.exports = {
     let nieuweDeelnemer = {
       name: faker.name.findName(),
       gender: 'male',
-      age: 40 + Math.floor(Math.random() * 20),
+      age: 40 + Math.floor(Math.random() * 25),
       driver: 'Rijder',
       seats: 2 + Math.floor(Math.random() * 5)
     };
@@ -19,8 +19,10 @@ module.exports = {
     });
     for (i = 0; i < 60; i++) {
       var nieuweDeelnemer = this.maakDeelnemer();
-      if (i % 2 === 0) {
+      if (Math.floor(Math.random() * 101) % 2 === 0) {
         nieuweDeelnemer.gender = 'female';
+      }
+      if (Math.floor(Math.random() * 101) % 2 === 0) {
         nieuweDeelnemer.driver = 'Bijrijder';
       }
       Deelnemer.create(nieuweDeelnemer, (err, deelnemer) => {
