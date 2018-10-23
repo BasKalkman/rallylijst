@@ -41,25 +41,20 @@ app.use(
   session({
     cookieName: 'rallySession',
     secret: 'langeTestKeyTeVervangen',
-    duration: 1000 * 60 * 60 * 24
+    duration: 1000 * 60 * 60 * 24,
+    httpOnly: true
   })
 );
 
 // MIDDLEWARE
 app.use(function(req, res, next) {
-  if (req.rallySession.user) {
-    User.findOne({ name: req.rallySession.user.name }, (err, user) => {
-      res.locals.user = user;
-      next();
-    });
-  } else {
-    res.locals.user = undefined;
-    next();
-  }
+  res.locals.user = req.rallySession.user;
+  next();
 });
 
 // SEED
 // seed.seedDB();
+
 // RESEED
 app.get('/reseed', (req, res) => {
   seed.seedDB();
@@ -76,6 +71,19 @@ app.use(rallyRoutes);
 
 // LOGIN / LOGOUT
 app.use(authRoutes);
+
+// INDELING ROUTES
+app.get('/maakIndeling', (req, res) => {
+  Deelnemer.find({ present: 'aanwezig', driver: 'Rijder', gender: 'male' }, (err, rijdersMan) => {
+    Deelnemer.find({ present: 'aanwezig', driver: 'Bijrijder', gender: 'male' }, (err, bijrijdersMan) => {
+      Deelnemer.find({ present: 'aanwezig', driver: 'Rijder', gender: 'female' }, (err, rijdersVrouw) => {
+        Deelnemer.find({ present: 'aanwezig', driver: 'Bijrijder', gender: 'female' }, (err, bijrijdersVrouw) => {
+          // Variabele opgehaald, nu de logica nog
+        });
+      });
+    });
+  });
+});
 
 // 404
 app.get('*', (req, res) => {
