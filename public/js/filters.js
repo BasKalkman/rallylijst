@@ -6,7 +6,7 @@ var bijrijders = document.getElementById('bijrijders');
 
 function toonAlles() {
   document.querySelectorAll('.gender').forEach(function(el) {
-    el.parentNode. = 'inline-block';
+    el.parentNode.style.display = '';
   });
 }
 
