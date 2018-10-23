@@ -13,6 +13,7 @@ function toonAlles() {
 function toonMannen() {
   var tabelMannen = document.querySelectorAll('.gender');
   tabelMannen.forEach(function(el) {
+    el.parentNode.style.display = '';
     if (el.textContent != 'male') {
       el.parentNode.style.display = 'none';
     }
@@ -22,6 +23,7 @@ function toonMannen() {
 function toonVrouwen() {
   var tabelMannen = document.querySelectorAll('.gender');
   tabelMannen.forEach(function(el) {
+    el.parentNode.style.display = '';
     if (el.textContent != 'female') {
       el.parentNode.style.display = 'none';
     }
@@ -31,6 +33,7 @@ function toonVrouwen() {
 function toonRijders() {
   var tabelMannen = document.querySelectorAll('.driver');
   tabelMannen.forEach(function(el) {
+    el.parentNode.style.display = '';
     if (el.textContent != 'Rijder') {
       el.parentNode.style.display = 'none';
     }
@@ -40,6 +43,7 @@ function toonRijders() {
 function toonBijrijders() {
   var tabelMannen = document.querySelectorAll('.driver');
   tabelMannen.forEach(function(el) {
+    el.parentNode.style.display = '';
     if (el.textContent != 'Bijrijder') {
       el.parentNode.style.display = 'none';
     }

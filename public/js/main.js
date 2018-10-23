@@ -1,3 +1,4 @@
+// Deelnemers ophalen en uitsplitsen
 fetch('/ophalen')
   .then(response => response.json())
   .then(data => {

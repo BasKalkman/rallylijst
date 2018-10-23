@@ -10,6 +10,7 @@ module.exports = {
       gender: 'male',
       age: 40 + Math.floor(Math.random() * 25),
       driver: 'Rijder',
+      phone: faker.phone.phoneNumber(),
       seats: 2 + Math.floor(Math.random() * 5)
     };
     return nieuweDeelnemer;

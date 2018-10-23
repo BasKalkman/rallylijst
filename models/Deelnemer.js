@@ -6,6 +6,7 @@ var deelnemerSchema = new mongoose.Schema({
   age: Number,
   driver: String,
   seats: Number,
+  phone: String,
   present: { type: String, default: 'aanwezig' },
   doubled: { type: Number, default: 0 }
 });
