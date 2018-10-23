@@ -1,5 +1,7 @@
 var faker = require('faker/locale/nl');
 var Deelnemer = require('./models/Deelnemer');
+var User = require('./models/User');
+var bcrypt = require('bcryptjs');
 
 module.exports = {
   maakDeelnemer: function() {
@@ -31,5 +33,20 @@ module.exports = {
         }
       });
     }
+    // User.remove({}, function(err) {
+    //   if (err) {
+    //     console.log(err);
+    //   } else {
+    //     bcrypt.genSalt(10, function(err, salt) {
+    //       bcrypt.hash('1234', salt, function(err, hash) {
+    //         User.create({ name: 'Admin', hash: hash }, function(err, user) {
+    //           if (err) {
+    //             console.log('Kon admin niet aanmaken');
+    //           }
+    //         });
+    //       });
+    //     });
+    //   }
+    // });
   }
 };
