@@ -2,13 +2,23 @@
 
 
 <h3>Deelnemerslijst</h3>
+<p>Filters:</p>
+<p>
+<button id="alles">Alles</button>
+<button id="mannen">Mannen</button>
+<button id="vrouwen">Vrouwen</button>
+<button id="rijders">Rijders</button>
+<button id="bijrijders">Bijrijders</button>
+</p>
 
 <table class="table">
     <thead class="thead-dark">
         <tr>
             <th>Naam</th>
+            <th>Geslacht</th>
             <th>Leeftijd</th>
             <th>Aanwezig</th>
+            <th>Rit</th>
             <th>&nbsp;</th>
         </tr>
     </thead>
@@ -16,8 +26,10 @@
     <% deelnemers.forEach(function(deelnemer) { %>
         <tr>
             <td><%= deelnemer.name %></td>
+            <td class="gender"><%= deelnemer.gender %></td>
             <td><%= deelnemer.age %></td>
             <td><%= deelnemer.present %></td>
+            <td class="driver"><%= deelnemer.driver %></td>
             <td><a href="/deelnemer/<%= deelnemer._id %>">Wijzig</a></td>
         </tr>
     <% }) %>
@@ -26,5 +38,6 @@
 
 </table>
 
+<script src="./js/filters.js"></script>
     
 <% include ./partials/footer %>

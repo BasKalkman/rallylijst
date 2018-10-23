@@ -19,7 +19,7 @@ module.exports = {
     Deelnemer.remove({}, function(err) {
       console.log('Dropped table');
     });
-    for (i = 0; i < 60; i++) {
+    for (i = 0; i < 30; i++) {
       var nieuweDeelnemer = this.maakDeelnemer();
       if (Math.floor(Math.random() * 101) % 2 === 0) {
         nieuweDeelnemer.gender = 'female';
