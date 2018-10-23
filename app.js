@@ -13,7 +13,8 @@ var express = require('express'),
   methodOverride = require('method-override'),
   bcrypt = require('bcryptjs'),
   session = require('client-sessions'),
-  seed = require('./seed');
+  seed = require('./seed'),
+  requireLogin = require('./requireLogin');
 
 // MONGOOSE
 mongoose.connect(
@@ -24,6 +25,9 @@ mongoose.connect(
 // MODELS
 var Deelnemer = require('./models/Deelnemer');
 var User = require('./models/User');
+
+// ROUTES
+var authRoutes = require('./routes/authRoutes');
 
 // EXPRESS CONFIG
 app.set('view engine', 'ejs');
@@ -42,31 +46,7 @@ app.use(
 );
 
 // MIDDLEWARE
-app.use(function(req, res, next) {
-  if (req.rallySession && req.rallySession.user) {
-    User.findOne({ name: req.rallySession.user.name }, (err, user) => {
-      if (!user) {
-        req.rallySession.reset();
-        res.redirect('/login');
-      } else {
-        user.password = '';
-        res.locals.user = user;
-        req.rallySession.user = user;
-        next();
-      }
-    });
-  } else {
-    next();
-  }
-});
-
-function requireLogin(req, res, next) {
-  if (req.rallySession.user) {
-    next();
-  } else {
-    res.redirect('/login');
-  }
-}
+app.use();
 
 // SEED
 // seed.seedDB();
@@ -143,48 +123,7 @@ app.get('/ophalen', (req, res) => {
 });
 
 // LOGIN / LOGOUT
-app.get('/login', (req, res) => {
-  res.render('login');
-});
-
-app.get('/register', (req, res) => {
-  res.render('register');
-});
-
-app.post('/register', (req, res) => {
-  res.send('Register post route');
-});
-
-app.post('/login', (req, res) => {
-  User.findOne({ name: req.body.user.name }, function(err, user) {
-    if (err) {
-      console.log('Kon gebruiker niet vinden of ophalen');
-      res.redirect('/login');
-    } else if (!user) {
-      console.log('Gebruiker niet gevonden');
-      res.redirect('/login');
-    } else {
-      bcrypt.compare(req.body.user.password, user.hash, function(err, result) {
-        if (err) {
-          console.log(err);
-        } else if (!result) {
-          res.redirect('/login');
-        } else {
-          // LOGIN GELUKT
-          console.log('Login gelukt');
-          user.password = '';
-          req.rallySession.user = user;
-          res.redirect('/deelnemers');
-        }
-      });
-    }
-  });
-});
-
-app.get('/logout', (req, res) => {
-  req.rallySession.reset();
-  res.redirect('/login');
-});
+app.use(authRoutes);
 
 // 404
 app.get('*', (req, res) => {

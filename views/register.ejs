@@ -1,0 +1,11 @@
+<% include ./partials/header %>
+
+<h3>Register</h3>
+
+<form method='POST' action='/register'>
+  <input type="text" name="user[name]" id="nameInput" placeholder="Loginnaam" />
+  <input type="password" name="user[password]" id="pwInput"><br>
+  <input type="submit" value="Register" class="btn btn-primary">
+</form>
+
+<% include ./partials/footer %>
