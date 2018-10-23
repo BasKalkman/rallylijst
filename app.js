@@ -3,7 +3,6 @@
 // - In Deelnemer model, present default is --
 // - requireLogin middleware op alle routes
 // - rallySession key naar env
-// - MIDDLEWARE ucommenten
 
 // MODULES
 var express = require('express'),
@@ -28,6 +27,7 @@ var User = require('./models/User');
 
 // ROUTES
 var authRoutes = require('./routes/authRoutes');
+var rallyRoutes = require('./routes/rallyRoutes');
 
 // EXPRESS CONFIG
 app.set('view engine', 'ejs');
@@ -46,7 +46,17 @@ app.use(
 );
 
 // MIDDLEWARE
-app.use();
+app.use(function(req, res, next) {
+  if (req.rallySession.user) {
+    User.findOne({ name: req.rallySession.user.name }, (err, user) => {
+      res.locals.user = user;
+      next();
+    });
+  } else {
+    res.locals.user = undefined;
+    next();
+  }
+});
 
 // SEED
 // seed.seedDB();
@@ -61,66 +71,8 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
-// DEELNEMERSLIJST
-app.get('/deelnemers', (req, res) => {
-  Deelnemer.find({})
-    .sort({ name: 1 })
-    .exec(function(err, deelnemers) {
-      if (err) {
-        console.log('Kan deelnemers niet overzetten');
-      } else {
-        res.render('deelnemerslijst', { deelnemers: deelnemers });
-      }
-    });
-});
-
-// AUTO INDELING
-app.get('/indeling', (req, res) => {
-  Deelnemer.find({ present: 'aanwezig' })
-    .sort({ age: 1 })
-    .exec(function(err, deelnemers) {
-      if (err) {
-        console.log('Er ging iets mis met aanwezige deelnemers');
-      } else {
-        res.render('indeling', { deelnemers: deelnemers });
-      }
-    });
-});
-
-// SHOW - Overzicht deelnemers gegevens
-app.get('/deelnemer/:id', requireLogin, (req, res) => {
-  Deelnemer.findOne({ _id: req.params.id }, (err, deelnemer) => {
-    if (err) {
-      console.log('Fout bij ophalen deelnemer');
-    } else {
-      res.render('deelnemer', { deelnemer: deelnemer });
-    }
-  });
-});
-
-// UPDATE DEELNEMER - Naam, leeftijd, vooral aanwezigheid
-app.put('/deelnemer/:id', (req, res) => {
-  Deelnemer.findOneAndUpdate({ _id: req.params.id }, req.body.deelnemer, (err, result) => {
-    if (err) {
-      console.log('Kon niet wijzigen');
-    } else {
-      res.redirect('/deelnemers');
-    }
-  });
-});
-
-// OPHALEN
-app.get('/ophalen', (req, res) => {
-  Deelnemer.find({ present: 'aanwezig' })
-    .sort({ age: 1 })
-    .exec(function(err, deelnemers) {
-      if (err) {
-        console.log('Er ging iets mis met fetchen');
-      } else {
-        res.json(deelnemers);
-      }
-    });
-});
+// RALLY ROUTES
+app.use(rallyRoutes);
 
 // LOGIN / LOGOUT
 app.use(authRoutes);

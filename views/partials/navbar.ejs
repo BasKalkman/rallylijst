@@ -1,7 +1,10 @@
 <nav class="navbar navbar-expand navbar-light bg-light">
     <div class="navbar-nav">
-        <a href="#" class="navbar-brand">SinglesRally</a>
+        <a href="/" class="navbar-brand">SinglesRally</a>
         <a href="/deelnemers" class="nav-item nav-link">Deelnemers</a>
         <a href="/indeling" class="nav-item nav-link">Indeling</a>
+        <% if (user != undefined) { %>
+        <a href="/logout" class="nav-item nav-link">Logout</a>
+        <% } %>
     </div>
 </nav>
