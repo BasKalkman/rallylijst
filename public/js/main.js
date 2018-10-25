@@ -30,47 +30,8 @@ fetch('/ophalen')
 
     document.getElementById('indelingOverzicht').appendChild(liMan);
     document.getElementById('indelingOverzicht').appendChild(liVrouw);
-
-    console.log('rijders man: ', rijdersMan);
-    console.log('rijders vrouw: ', rijdersVrouw);
-    console.log('bijrijders man: ', bijrijdersMan);
-    console.log('bijrijders vrouw: ', bijrijdersVrouw);
   })
   .catch(err => console.log(err));
 
 // RITTEN
 var ritten = 6;
-
-// GROEPEN maken
-function maakGroep(arr) {
-  let groepen = Math.floor(arr.length / ritten);
-  let extra = arr.length % ritten;
-  let splitsPer = ritten + Math.floor(extra / groepen);
-  let returnArray = [];
-  let tempArray = [];
-
-  for (i = 1; i <= arr.length; i++) {
-    tempArray.push(arr[i]);
-
-    if (i % splitsPer === 0) {
-      returnArray.push(tempArray);
-      tempArray = [];
-    }
-    if (i === arr.length) {
-      returnArray.push(tempArray);
-      return returnArray;
-    }
-  }
-}
-
-function test() {
-  var groepManRijders = maakGroep(rijdersMan);
-  var groepVrouwRijders = maakGroep(rijdersVrouw);
-  var groepManBijRijders = maakGroep(bijrijdersMan);
-  var groepVrouwBijRijders = maakGroep(bijrijdersVrouw);
-
-  console.log('Groep rijdersMan: ', groepManRijders);
-  console.log('Groep rijdersVrouw: ', groepVrouwRijders);
-  console.log('Groep bijrijders Man: ', groepManBijRijders);
-  console.log('Groep bijrijders Vrouw: ', groepVrouwBijRijders);
-}
