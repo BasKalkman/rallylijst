@@ -30,8 +30,25 @@ fetch('/ophalen')
 
     document.getElementById('indelingOverzicht').appendChild(liMan);
     document.getElementById('indelingOverzicht').appendChild(liVrouw);
+
+    checkFouten();
   })
   .catch(err => console.log(err));
 
-// RITTEN
+// AANTAL RITTEN
 var ritten = 6;
+
+// FOUTEN VOOR INDELING
+function checkFouten() {
+  let waarschuwing = document.getElementById('waarschuwing');
+  waarschuwing.textContent = '';
+  // Waarschuwing bij teveel rijders
+  if (rijdersMan > bijrijdersVrouw || rijdersVrouw > bijrijdersMan) {
+    waarschuwing.textContent += `\r\nLET OP! Meer rijders dan bijrijders! -- Pas aan via deelnemerslijst`;
+  }
+
+  // Waarchuwing bij te weinig rijders voor hoeveelheid ritten
+  if (rijdersMan < ritten || rijdersVrouw < ritten) {
+    waarschuwing.textContent += `\r\nLET OP! Te weinig rijders voor hoeveelheid ritten.`;
+  }
+}
