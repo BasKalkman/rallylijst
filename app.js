@@ -72,18 +72,18 @@ app.use(rallyRoutes);
 // LOGIN / LOGOUT
 app.use(authRoutes);
 
-// INDELING ROUTES
-app.get('/maakIndeling', (req, res) => {
-  Deelnemer.find({ present: 'aanwezig', driver: 'Rijder', gender: 'male' }, (err, rijdersMan) => {
-    Deelnemer.find({ present: 'aanwezig', driver: 'Bijrijder', gender: 'male' }, (err, bijrijdersMan) => {
-      Deelnemer.find({ present: 'aanwezig', driver: 'Rijder', gender: 'female' }, (err, rijdersVrouw) => {
-        Deelnemer.find({ present: 'aanwezig', driver: 'Bijrijder', gender: 'female' }, (err, bijrijdersVrouw) => {
-          // Variabele opgehaald, nu de logica nog
-        });
-      });
-    });
-  });
-});
+// INDELING ROUTES -- MOMENTEEL VIA MAIN.JS
+// app.get('/maakIndeling', (req, res) => {
+//   Deelnemer.find({ present: 'aanwezig', driver: 'Rijder', gender: 'male' }, (err, rijdersMan) => {
+//     Deelnemer.find({ present: 'aanwezig', driver: 'Bijrijder', gender: 'male' }, (err, bijrijdersMan) => {
+//       Deelnemer.find({ present: 'aanwezig', driver: 'Rijder', gender: 'female' }, (err, rijdersVrouw) => {
+//         Deelnemer.find({ present: 'aanwezig', driver: 'Bijrijder', gender: 'female' }, (err, bijrijdersVrouw) => {
+//           // Variabele opgehaald, nu de logica nog
+//         });
+//       });
+//     });
+//   });
+// });
 
 // 404
 app.get('*', (req, res) => {
