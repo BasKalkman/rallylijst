@@ -12,10 +12,19 @@
 - -- Voorkeur uit lijst verwijderen of opslaan als "voldaan" en niet meer terug laten komen?
 
 
-// OPTIE 2
+// OPTIE 2 -- WERKT NIET IN ONEVEN ZONDER GROTE LEEFTIJDSVERSCHILLEN TE MAKEN
 - Foutmelding als meer rijders dan bijrijders, eerst bijwerken in Deelnemerslijst
 
 - Random invullen
 - Check of reeds samen gereden
 - -- Dan volgende checken
 - -- Als alle rijders gevuld en bijrijders over, dubbelen
+
+// OPTIE 3
+- Indeling op basis van score
+- Per bijrijder, score berekenen obv bv leeftijd/lengte/opleiding
+- -- Indien niet eerder geplaatst, plaatsen, anders volgende
+
+* Prioriteit instellen
+* Wegingen berekenen
+* Dubbelen checken
