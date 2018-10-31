@@ -3,6 +3,8 @@ var rijdersVrouw = [];
 var bijrijdersVrouw = [];
 var bijrijdersMan = [];
 
+// INIT - Ronde naar 1 zetten, Array leeg maken
+
 fetch('/ophalen')
   .then(response => response.json())
   .then(data => {
@@ -48,7 +50,65 @@ function checkFouten() {
   }
 
   // Waarchuwing bij te weinig rijders voor hoeveelheid ritten
-  if (rijdersMan < ritten || rijdersVrouw < ritten) {
+  if (
+    (rijdersMan.length < ritten && rijdersMan.length != 0) ||
+    (rijdersVrouw.length < ritten && rijdersVrouw.length != 0)
+  ) {
     waarschuwing.textContent += `\r\nLET OP! Te weinig rijders voor hoeveelheid ritten.`;
   }
+
+  // Waarschuwing bij bijrijders zonder rijders
+  if (
+    (rijdersMan.length === 0 && bijrijdersVrouw.length > 0) ||
+    (rijdersVrouw.length === 0 && bijrijdersMan.length > 0)
+  ) {
+    waarschuwing.textContent += `\r\nLET OP! Er zijn bijrijders, maar geen rijders`;
+  }
 }
+
+// Indeling op score
+
+// Score maken van alle rijders bij gegeven bijrijder
+function checkScore(bijrijder) {
+  let scoreArray = [];
+  let ageValue = 1;
+  let checkArray = bijrijder.gender === 'male' ? rijdersVrouw : rijdersMan;
+
+  checkArray.forEach(function(rijder) {
+    // Maak kwaliteitscore voor plaatsing
+    let startValue = 100;
+    let diff = Math.abs(bijrijder.age - rijder.age); // Bereken verschil, altijd positief getal
+    startValue -= diff * ageValue; // Aftrekkenv van startValue
+    scoreArray.push({ obj: rijder, score: startValue }); //Schrijf waarde naar Array
+  });
+  //Sorteer op hoogste waarde
+  scoreArray.sort(function(a, b) {
+    return b.score - a.score;
+  });
+
+  return scoreArray;
+}
+
+// Door array lopen en checken of ze al samen gereden hebben. Zo niet, plaatsen
+// TODO Logica om over te slaan indien voor deze ronde gevuld
+// TODO logica voor dubbelen als alle plaatsen vergeven zijn
+// TODO Logica om aantal stoelen te checken
+function plaatsen(bijrijder) {
+  let scoreArray = checkScore(bijrijder);
+  let geplaatst = false;
+  let i = 0;
+  while (geplaatst === false) {
+    if (scoreArray[i].obj.partners.indexOf(bijrijder._id) === -1) {
+      // EN checken of max 1 passagier
+      //Plaatsen als id niet in partners van rijder staat.
+      geplaatst = true;
+    } else {
+      // Volgende checken
+      // EN als i groter dan length rijders, toestaan +1 passagier
+      // Als reeds gedubbeld, score aanpassen?
+      i++;
+    }
+  }
+}
+
+// Ronde naar database schrijven

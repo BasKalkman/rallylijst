@@ -8,7 +8,11 @@ var deelnemerSchema = new mongoose.Schema({
   seats: Number,
   phone: String,
   present: { type: String, default: 'aanwezig' },
-  doubled: { type: Number, default: 0 }
+  doubled: { type: Number, default: 0 },
+  partners: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Deelnemer'
+  }
 });
 
 module.exports = mongoose.model('Deelnemer', deelnemerSchema);
