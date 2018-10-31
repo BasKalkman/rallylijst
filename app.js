@@ -15,9 +15,12 @@ var express = require('express'),
   seed = require('./seed'),
   requireLogin = require('./requireLogin');
 
+// ENV
+require('dotenv').config();
+
 // MONGOOSE
 mongoose.connect(
-  'mongodb://localhost/rally',
+  process.env.DB_TEST,
   { useNewUrlParser: true }
 );
 
@@ -40,7 +43,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(
   session({
     cookieName: 'rallySession',
-    secret: 'langeTestKeyTeVervangen',
+    secret: process.env.COOKIE_SECRET,
     duration: 1000 * 60 * 60 * 24,
     httpOnly: true
   })
