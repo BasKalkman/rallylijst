@@ -17,37 +17,37 @@ module.exports = {
   },
 
   seedDB: function() {
-    // Deelnemer.remove({}, function(err) {
-    //   console.log('Dropped table');
-    // });
-    // for (i = 0; i < 60; i++) {
-    //   var nieuweDeelnemer = this.maakDeelnemer();
-    //   if (Math.floor(Math.random() * 101) % 2 === 0) {
-    //     nieuweDeelnemer.gender = 'female';
-    //   }
-    //   if (Math.floor(Math.random() * 101) % 2 === 0) {
-    //     nieuweDeelnemer.driver = 'Bijrijder';
-    //   }
-    //   Deelnemer.create(nieuweDeelnemer, (err, deelnemer) => {
-    //     if (err) {
-    //       console.log('Er ging iets fout bij het maken van de deelnemer');
-    //     }
-    //   });
-    // }
-    User.remove({}, function(err) {
-      if (err) {
-        console.log(err);
-      } else {
-        bcrypt.genSalt(10, function(err, salt) {
-          bcrypt.hash('1234', salt, function(err, hash) {
-            User.create({ name: 'Admin', hash: hash }, function(err, user) {
-              if (err) {
-                console.log('Kon admin niet aanmaken');
-              }
-            });
-          });
-        });
-      }
+    Deelnemer.remove({}, function(err) {
+      console.log('Dropped table');
     });
+    for (i = 0; i < 60; i++) {
+      var nieuweDeelnemer = this.maakDeelnemer();
+      if (Math.floor(Math.random() * 101) % 2 === 0) {
+        nieuweDeelnemer.gender = 'female';
+      }
+      if (Math.floor(Math.random() * 101) % 2 === 0) {
+        nieuweDeelnemer.driver = 'Bijrijder';
+      }
+      Deelnemer.create(nieuweDeelnemer, (err, deelnemer) => {
+        if (err) {
+          console.log('Er ging iets fout bij het maken van de deelnemer');
+        }
+      });
+    }
+    // User.remove({}, function(err) {
+    //   if (err) {
+    //     console.log(err);
+    //   } else {
+    //     bcrypt.genSalt(10, function(err, salt) {
+    //       bcrypt.hash('1234', salt, function(err, hash) {
+    //         User.create({ name: 'Admin', hash: hash }, function(err, user) {
+    //           if (err) {
+    //             console.log('Kon admin niet aanmaken');
+    //           }
+    //         });
+    //       });
+    //     });
+    //   }
+    // });
   }
 };
