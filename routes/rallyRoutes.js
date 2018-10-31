@@ -54,7 +54,7 @@ router.put('/deelnemer/:id', (req, res) => {
 // OPHALEN
 router.get('/ophalen', (req, res) => {
   Deelnemer.find({ present: 'aanwezig' })
-    .sort({ age: 1 })
+    .sort({ age: -1 })
     .exec(function(err, deelnemers) {
       if (err) {
         console.log('Er ging iets mis met fetchen');
