@@ -1,0 +1,31 @@
+<% include ./partials/header %>
+
+
+<h1>Admin</h1>
+
+<p>
+    <a href="/register">Maak nieuwe gebruiker</a>
+</p>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>Gebruikersnaam</th>
+            <th>Rol</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+    <% users.forEach(function(user) { %>
+        <tr>
+            <td><%= user.name %></td>
+            <td><%= user.role %></td>
+            <td><a href="/user/<%= user._id %>">Wijzig</a></td>
+        </tr>
+    <% }) %>
+    </tbody>
+
+
+</table>
+    
+<% include ./partials/footer %>

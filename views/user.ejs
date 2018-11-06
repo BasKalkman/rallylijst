@@ -1,0 +1,23 @@
+<% include ./partials/header %>
+
+
+<h3>Gegevens voor <%= gebruiker.name %></h3>
+
+<form action="/user/<%= gebruiker._id %>?_method=PUT" method="POST">
+  <input type="text" name="user[name]" value="<%= gebruiker.name %>" /><br>
+  <select name="user[role]" id="role">
+    <option value="Gebruiker" <% if(gebruiker.role === 'Gebruiker') { %> selected <% } %>>Gebruiker</option>
+    <option value="Admin" <% if(gebruiker.role === 'Admin') { %> selected <% } %>>Admin</option>
+  </select><br>
+  Reset wachtwoord: <input type="password" name="user[password]"><br>
+  <input type="submit" value="Update" class="btn btn-primary">
+</form>
+
+<p>
+  <form action="/user/<%= gebruiker._id %>?_method=DELETE" method="POST">
+    <input type="submit" value="VERWIJDER" class="btn btn-danger">
+  </form>
+</p>
+
+    
+<% include ./partials/footer %>

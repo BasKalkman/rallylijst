@@ -3,6 +3,9 @@
         <a href="/" class="navbar-brand">SinglesRally</a>
         <a href="/deelnemers" class="nav-item nav-link">Deelnemers</a>
         <a href="/indeling" class="nav-item nav-link">Indeling</a>
+        <% if (user != undefined && user.role === 'Admin') { %>
+        <a href="/admin" class="nav-item nav-link">Admin</a>
+        <% } %>
         <% if (user != undefined) { %>
         <a href="/logout" class="nav-item nav-link">Logout</a>
         <% } %>
