@@ -34,20 +34,20 @@ module.exports = {
         }
       });
     }
-    // User.remove({}, function(err) {
-    //   if (err) {
-    //     console.log(err);
-    //   } else {
-    //     bcrypt.genSalt(10, function(err, salt) {
-    //       bcrypt.hash('1234', salt, function(err, hash) {
-    //         User.create({ name: 'Admin', hash: hash }, function(err, user) {
-    //           if (err) {
-    //             console.log('Kon admin niet aanmaken');
-    //           }
+    //   User.remove({}, function(err) {
+    //     if (err) {
+    //       console.log(err);
+    //     } else {
+    //       bcrypt.genSalt(10, function(err, salt) {
+    //         bcrypt.hash('1234', salt, function(err, hash) {
+    //           User.create({ name: 'Admin', role: 'Admin', hash: hash }, function(err, user) {
+    //             if (err) {
+    //               console.log('Kon admin niet aanmaken');
+    //             }
+    //           });
     //         });
     //       });
-    //     });
-    //   }
-    // });
+    //     }
+    //   });
   }
 };

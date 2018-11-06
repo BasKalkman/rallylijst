@@ -13,7 +13,8 @@ var express = require('express'),
   bcrypt = require('bcryptjs'),
   session = require('client-sessions'),
   seed = require('./seed'),
-  requireLogin = require('./requireLogin');
+  requireLogin = require('./requireLogin'),
+  requireAdmin = require('./requireAdmin');
 
 // ENV
 require('dotenv').config();

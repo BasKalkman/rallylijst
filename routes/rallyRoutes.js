@@ -4,7 +4,7 @@ var express = require('express'),
   requireLogin = require('../requireLogin');
 
 // DEELNEMERSLIJST
-router.get('/deelnemers', (req, res) => {
+router.get('/deelnemers', requireLogin, (req, res) => {
   Deelnemer.find({})
     .sort({ name: 1 })
     .exec(function(err, deelnemers) {
@@ -17,7 +17,7 @@ router.get('/deelnemers', (req, res) => {
 });
 
 // AUTO INDELING
-router.get('/indeling', (req, res) => {
+router.get('/indeling', requireLogin, (req, res) => {
   Deelnemer.find({ present: 'aanwezig' })
     .sort({ age: 1 })
     .exec(function(err, deelnemers) {
@@ -41,7 +41,7 @@ router.get('/deelnemer/:id', requireLogin, (req, res) => {
 });
 
 // UPDATE DEELNEMER - Naam, leeftijd, vooral aanwezigheid
-router.put('/deelnemer/:id', (req, res) => {
+router.put('/deelnemer/:id', requireLogin, (req, res) => {
   Deelnemer.findOneAndUpdate({ _id: req.params.id }, req.body.deelnemer, (err, result) => {
     if (err) {
       console.log('Kon niet wijzigen');
@@ -52,7 +52,7 @@ router.put('/deelnemer/:id', (req, res) => {
 });
 
 // OPHALEN
-router.get('/ophalen', (req, res) => {
+router.get('/ophalen', requireLogin, (req, res) => {
   Deelnemer.find({ present: 'aanwezig' })
     .sort({ age: -1 })
     .exec(function(err, deelnemers) {

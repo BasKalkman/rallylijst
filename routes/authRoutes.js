@@ -3,17 +3,18 @@ var mongoose = require('mongoose'),
   express = require('express'),
   router = express.Router({ mergeParams: true }),
   bcrypt = require('bcryptjs'),
-  requireLogin = require('../requireLogin');
+  requireLogin = require('../requireLogin'),
+  requireAdmin = require('../requireAdmin');
 
 router.get('/login', (req, res) => {
   res.render('login');
 });
 
-router.get('/register', (req, res) => {
+router.get('/register', requireLogin, requireAdmin, (req, res) => {
   res.render('register');
 });
 
-router.post('/register', (req, res) => {
+router.post('/register', requireLogin, requireAdmin, (req, res) => {
   res.send('Register post route');
 });
 
