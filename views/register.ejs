@@ -3,8 +3,12 @@
 <h3>Register</h3>
 
 <form method='POST' action='/register'>
-  <input type="text" name="user[name]" id="nameInput" placeholder="Loginnaam" />
+  <input type="text" name="user[name]" id="nameInput" placeholder="Loginnaam" /><br>
   <input type="password" name="user[password]" id="pwInput"><br>
+  <select name="user[role]" id="role">
+    <option value="Gebruiker">Gebruiker</option>
+    <option value="Admin">Admin</option>
+  </select><br>
   <input type="submit" value="Register" class="btn btn-primary">
 </form>
 

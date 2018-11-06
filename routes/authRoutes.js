@@ -15,7 +15,17 @@ router.get('/register', requireLogin, requireAdmin, (req, res) => {
 });
 
 router.post('/register', requireLogin, requireAdmin, (req, res) => {
-  res.send('Register post route');
+  bcrypt.genSalt(12, function(err, salt) {
+    bcrypt.hash(req.body.user.password, salt, function(err, hash) {
+      User.create({ name: req.body.user.name, role: req.body.user.role, hash: hash }, function(err, newUser) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.redirect('/');
+        }
+      });
+    });
+  });
 });
 
 router.post('/login', (req, res) => {
