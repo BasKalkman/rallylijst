@@ -4,10 +4,13 @@ var bijrijdersVrouw = [];
 var bijrijdersMan = [];
 
 // INIT - Ronde naar 1 zetten, Array leeg maken
+var ritIndeling = [];
 
+// Data ophalen
 fetch('/ophalen')
-  .then(response => response.json())
+  .then(response => response.json()) // Data van bitstream naar json
   .then(data => {
+    // Uitsplitsen mannen/vrouwen, rijders/bijrijders
     data.forEach(el => {
       if (el.gender === 'male' && el.driver === 'Rijder') {
         rijdersMan.push(el);
@@ -24,6 +27,7 @@ fetch('/ophalen')
     });
   })
   .then(function() {
+    // Overzicht naar HTML schrijven
     var liMan = document.createElement('li');
     var liVrouw = document.createElement('li');
 
@@ -71,8 +75,8 @@ function checkFouten() {
 // Score maken van alle rijders bij gegeven bijrijder
 function checkScore(bijrijder) {
   let scoreArray = [];
-  let ageValue = 1;
-  let checkArray = bijrijder.gender === 'male' ? rijdersVrouw : rijdersMan;
+  let ageValue = 2; // Waarde om van startscore af te trekken per jaar leeftijdsverschil
+  let checkArray = bijrijder.gender === 'male' ? rijdersVrouw : rijdersMan; // Als man, rijdersVrouw checken, anders rijdersMan checken
 
   checkArray.forEach(function(rijder) {
     // Maak kwaliteitscore voor plaatsing
@@ -93,22 +97,42 @@ function checkScore(bijrijder) {
 // TODO Logica om over te slaan indien voor deze ronde gevuld
 // TODO logica voor dubbelen als alle plaatsen vergeven zijn
 // TODO Logica om aantal stoelen te checken
-function plaatsen(bijrijder) {
+function plaatsZoeken(bijrijder) {
+  let autoPaar = { rijder: '', bijrijder: [] };
   let scoreArray = checkScore(bijrijder);
   let geplaatst = false;
   let i = 0;
   while (geplaatst === false) {
-    if (scoreArray[i].obj.partners.indexOf(bijrijder._id) === -1) {
-      // EN checken of max 1 passagier
-      //Plaatsen als id niet in partners van rijder staat.
-      geplaatst = true;
+    let rijder = scoreArray[i].obj;
+    // Als bijrijder ID nog nooit aan rijder gekoppeld is
+    if (rijder.partners.indexOf(bijrijder._id) === -1) {
+      // EN checken of er niet al iemand anders is ingedeeld
+      if (checkBeschikbaarheidRijder(ritIndeling, rijder._id)) {
+        autoPaar.rijder = scoreArray[i].obj._id; // ID van rijder naar obj, dat weer naar array gaat
+        autoPaar.bijrijder.push(bijrijder._id); // ID van bijrijder naar obj
+        ritIndeling.push(autoPaar); // naar ritIndeling
+
+        geplaatst = true; // einde loop, bijrijder geplaatst
+      } else {
+        i++;
+      }
     } else {
       // Volgende checken
       // EN als i groter dan length rijders, toestaan +1 passagier
-      // Als reeds gedubbeld, score aanpassen?
       i++;
     }
   }
 }
+
+// Check of rijder ID al bestaat, check of bijrijder al gekoppeld is
+function checkBeschikbaarheidRijder(arr, idRijder) {
+  arr.forEach(paar => {
+    if (paar.rijder === idRijder) {
+      return true;
+    }
+  });
+}
+
+// Functie paar naar ritIndeling schrijven
 
 // Ronde naar database schrijven
