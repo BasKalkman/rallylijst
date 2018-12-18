@@ -95,15 +95,7 @@ function checkScore(bijrijder) {
 }
 
 // Door array lopen en checken of ze al samen gereden hebben. Zo niet, plaatsen
-<<<<<<< HEAD
-// TODO Logica om over te slaan indien voor deze ronde gevuld
-// TODO logica voor dubbelen als alle plaatsen vergeven zijn
-// TODO Logica om aantal stoelen te checken
-function plaatsZoeken(bijrijder) {
-  let autoPaar = { rijder: '', bijrijder: [] };
-=======
 function plaatsen(bijrijder) {
->>>>>>> new
   let scoreArray = checkScore(bijrijder);
   let geplaatst = false;
   let i = 0;
@@ -111,25 +103,6 @@ function plaatsen(bijrijder) {
 
   // While geplaatst false
   while (geplaatst === false) {
-<<<<<<< HEAD
-    let rijder = scoreArray[i].obj;
-    // Als bijrijder ID nog nooit aan rijder gekoppeld is
-    if (rijder.partners.indexOf(bijrijder._id) === -1) {
-      // EN checken of er niet al iemand anders is ingedeeld
-      if (checkBeschikbaarheidRijder(ritIndeling, rijder._id)) {
-        autoPaar.rijder = scoreArray[i].obj._id; // ID van rijder naar obj, dat weer naar array gaat
-        autoPaar.bijrijder.push(bijrijder._id); // ID van bijrijder naar obj
-        ritIndeling.push(autoPaar); // naar ritIndeling
-
-        geplaatst = true; // einde loop, bijrijder geplaatst
-      } else {
-        i++;
-      }
-    } else {
-      // Volgende checken
-      // EN als i groter dan length rijders, toestaan +1 passagier
-      i++;
-=======
     // Zet obj van rijder uit scoreArray in temp var
     let rijder = scoreArray[i].obj;
     // als bijrijder id niet in rijder.partners staat
@@ -160,28 +133,13 @@ function plaatsen(bijrijder) {
     if (i >= scoreArray.length) {
       maxPax++;
       i = 0;
->>>>>>> new
     }
   }
 }
 
-<<<<<<< HEAD
-// Check of rijder ID al bestaat, check of bijrijder al gekoppeld is
-function checkBeschikbaarheidRijder(arr, idRijder) {
-  arr.forEach(paar => {
-    if (paar.rijder === idRijder) {
-      return true;
-    }
-  });
-}
-
-// Functie paar naar ritIndeling schrijven
-
-=======
 function maakRonde() {
   bijrijdersMan.forEach(bijrijder => plaatsen(bijrijder));
   bijrijdersVrouw.forEach(bijrijder => plaatsen(bijrijder));
   console.log(ritIndeling);
 }
->>>>>>> new
 // Ronde naar database schrijven
