@@ -1,8 +1,8 @@
 <% include ./partials/header %>
 <% var user = deelnemers %>
 
-<script src="/js/main.js"></script>
-<a href="/reseed">Reseed</a>
+
+<a href="/reseed">Reseed</a> - <a href="#" onClick="maakRonde()">Maak indeling</a>
 
 <div>
   <span id="waarschuwing"></span>
@@ -11,7 +11,18 @@
 </div>
 
 <div id="indelingDiv">
+  <table class="table" id="indelingTable">
+    <thead class="thead-dark">
+      <th scope="col">
+        Rijder
+      </th>
+      <th scope="col">
+        Bijrijder(s)
+      </th>
+    </thead>
+  </table>
 </div>
 
+<script src="/js/main.js"></script>
 
 <% include ./partials/footer %>

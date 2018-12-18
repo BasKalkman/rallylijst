@@ -8,8 +8,8 @@ var deelnemerSchema = new mongoose.Schema({
   seats: { type: Number, default: 2 },
   phone: { type: String, default: 0 },
   present: { type: String, default: 'aanwezig' },
-  doubled: { type: Number, default: 0 },
-  partners: { type: Array, default: [] }
+  partners: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Deelnemer' }],
+  doubled: { type: Number, default: 0 }
 });
 
 module.exports = mongoose.model('Deelnemer', deelnemerSchema);

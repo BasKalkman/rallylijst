@@ -11,7 +11,7 @@ module.exports = {
       age: 40 + Math.floor(Math.random() * 25),
       driver: 'Rijder',
       phone: faker.phone.phoneNumber(),
-      seats: 2 + Math.floor(Math.random() * 5)
+      seats: 5
     };
     return nieuweDeelnemer;
   },
@@ -24,10 +24,11 @@ module.exports = {
       var nieuweDeelnemer = this.maakDeelnemer();
       if (Math.floor(Math.random() * 101) % 2 === 0) {
         nieuweDeelnemer.gender = 'female';
-      }
-      if (Math.floor(Math.random() * 101) % 2 === 0) {
         nieuweDeelnemer.driver = 'Bijrijder';
       }
+      // if (Math.floor(Math.random() * 101) % 2 === 0) {
+      //   nieuweDeelnemer.driver = 'Bijrijder';
+      // }
       Deelnemer.create(nieuweDeelnemer, (err, deelnemer) => {
         if (err) {
           console.log('Er ging iets fout bij het maken van de deelnemer');

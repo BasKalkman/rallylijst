@@ -4,9 +4,6 @@ var bijrijdersVrouw = [];
 var bijrijdersMan = [];
 var ritIndeling = [];
 
-// INIT - Ronde naar 1 zetten, Array leeg maken
-var ritIndeling = [];
-
 // Data ophalen
 fetch('/ophalen')
   .then(response => response.json()) // Data van bitstream naar json
@@ -40,7 +37,6 @@ fetch('/ophalen')
 
     checkFouten();
   })
-  .then(data => maakRonde())
   .catch(err => console.log(err));
 
 // AANTAL RITTEN
@@ -107,22 +103,22 @@ function plaatsen(bijrijder) {
     let rijder = scoreArray[i].obj;
     // als bijrijder id niet in rijder.partners staat
     if (rijder.partners.indexOf(bijrijder._id) === -1) {
-      // -- -- Check of al aanwezig in ritIndeling
-      let index = ritIndeling.findIndex(item => item.rijder === rijder._id);
+      // -- -- Check of rijder al aanwezig in ritIndeling
+      let index = ritIndeling.findIndex(item => item.rijder === rijder);
       if (index === -1) {
         // -- -- -- Zo nee: Aanmaken en plaatsen
         let obj = {
-          rijder: rijder._id,
+          rijder: rijder,
           bijrijder: []
         };
-        obj.bijrijder.push(bijrijder._id);
+        obj.bijrijder.push(bijrijder);
         ritIndeling.push(obj);
         geplaatst = true;
       } else {
         // -- -- -- Anders: Check of passagiers minder dan maxPax is && genoeg ruimte in de auto
         if (ritIndeling[index].bijrijder.length < maxPax && ritIndeling[index].bijrijder.length < rijder.seats - 1) {
           // -- -- -- -- Zo ja: Plaatsen
-          ritIndeling[index].bijrijder.push(bijrijder._id);
+          ritIndeling[index].bijrijder.push(bijrijder);
           geplaatst = true;
         }
       }
@@ -133,13 +129,105 @@ function plaatsen(bijrijder) {
     if (i >= scoreArray.length) {
       maxPax++;
       i = 0;
+      if (maxPax === 7) {
+        alert(`Kon ${bijrijder.name} niet plaatsen. MaxPax = ${maxPax} - i: ${i}`);
+        break;
+      }
     }
   }
 }
 
 function maakRonde() {
-  bijrijdersMan.forEach(bijrijder => plaatsen(bijrijder));
-  bijrijdersVrouw.forEach(bijrijder => plaatsen(bijrijder));
-  console.log(ritIndeling);
+  rijdersMan = [];
+  rijdersVrouw = [];
+  bijrijdersVrouw = [];
+  bijrijdersMan = [];
+  ritIndeling = [];
+  fetch('/ophalen')
+    .then(response => response.json()) // Data van bitstream naar json
+    .then(data => {
+      // Uitsplitsen mannen/vrouwen, rijders/bijrijders
+      data.forEach(el => {
+        if (el.gender === 'male' && el.driver === 'Rijder') {
+          rijdersMan.push(el);
+        }
+        if (el.gender === 'male' && el.driver === 'Bijrijder') {
+          bijrijdersMan.push(el);
+        }
+        if (el.gender === 'female' && el.driver === 'Rijder') {
+          rijdersVrouw.push(el);
+        }
+        if (el.gender === 'female' && el.driver === 'Bijrijder') {
+          bijrijdersVrouw.push(el);
+        }
+      });
+    })
+    .then(data => {
+      bijrijdersMan.forEach(bijrijder => plaatsen(bijrijder));
+      bijrijdersVrouw.forEach(bijrijder => plaatsen(bijrijder));
+
+      verstuur();
+    })
+    .catch(err => console.log(err));
 }
+
 // Ronde naar database schrijven
+function verstuur() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/verwerkIndeling', true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  let verstuurIndeling = JSON.stringify(ritIndeling);
+  xhr.send(verstuurIndeling);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4) {
+      var str = xhr.response;
+      console.log(JSON.parse(str));
+      toonIndeling(str);
+    }
+  };
+  console.log('verstuurd');
+}
+
+// Toon indeling op pagina
+function toonIndeling(str) {
+  let table = document.getElementById('indelingTable');
+  // Empty table
+  while (table.firstChild) {
+    table.removeChild(table.firstChild);
+  }
+  console.log('table removed');
+
+  let data = JSON.parse(str);
+
+  // Recreate Header
+  var thead = document.createElement('thead');
+  thead.classList = 'thead-dark';
+  var thrijder = document.createElement('th');
+  thrijder.textContent = 'Rijder';
+  var thbijrijder = document.createElement('th');
+  thbijrijder.textContent = 'Bijrijder(s)';
+  thead.appendChild(thrijder);
+  thead.appendChild(thbijrijder);
+  table.appendChild(thead);
+
+  // Fill table
+  data.forEach(auto => {
+    // Maak rij
+    let row = document.createElement('tr');
+    // Maak rijder
+    let rijder = document.createElement('td');
+    rijder.textContent = auto.rijder.name;
+    row.append(rijder);
+    // Maak bijrijder(s)
+    let bijrijder = document.createElement('td');
+    let ul = document.createElement('ul');
+    auto.bijrijder.forEach(bijrijder => {
+      let li = document.createElement('li');
+      li.textContent = bijrijder.name;
+      ul.append(li);
+    });
+    bijrijder.append(ul);
+    row.append(bijrijder);
+    table.append(row);
+  });
+}
