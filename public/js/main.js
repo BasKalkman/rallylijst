@@ -2,6 +2,7 @@ var rijdersMan = [];
 var rijdersVrouw = [];
 var bijrijdersVrouw = [];
 var bijrijdersMan = [];
+var ritIndeling = [];
 
 // INIT - Ronde naar 1 zetten, Array leeg maken
 
@@ -35,6 +36,7 @@ fetch('/ophalen')
 
     checkFouten();
   })
+  .then(data => maakRonde())
   .catch(err => console.log(err));
 
 // AANTAL RITTEN
@@ -67,7 +69,6 @@ function checkFouten() {
 }
 
 // Indeling op score
-
 // Score maken van alle rijders bij gegeven bijrijder
 function checkScore(bijrijder) {
   let scoreArray = [];
@@ -90,25 +91,51 @@ function checkScore(bijrijder) {
 }
 
 // Door array lopen en checken of ze al samen gereden hebben. Zo niet, plaatsen
-// TODO Logica om over te slaan indien voor deze ronde gevuld
-// TODO logica voor dubbelen als alle plaatsen vergeven zijn
-// TODO Logica om aantal stoelen te checken
 function plaatsen(bijrijder) {
   let scoreArray = checkScore(bijrijder);
   let geplaatst = false;
   let i = 0;
+  let maxPax = 1;
+
+  // While geplaatst false
   while (geplaatst === false) {
-    if (scoreArray[i].obj.partners.indexOf(bijrijder._id) === -1) {
-      // EN checken of max 1 passagier
-      //Plaatsen als id niet in partners van rijder staat.
-      geplaatst = true;
-    } else {
-      // Volgende checken
-      // EN als i groter dan length rijders, toestaan +1 passagier
-      // Als reeds gedubbeld, score aanpassen?
-      i++;
+    // Zet obj van rijder uit scoreArray in temp var
+    let rijder = scoreArray[i].obj;
+    // als bijrijder id niet in rijder.partners staat
+    if (rijder.partners.indexOf(bijrijder._id) === -1) {
+      // -- -- Check of al aanwezig in ritIndeling
+      let index = ritIndeling.findIndex(item => item.rijder === rijder._id);
+      if (index === -1) {
+        // -- -- -- Zo nee: Aanmaken en plaatsen
+        let obj = {
+          rijder: rijder._id,
+          bijrijder: []
+        };
+        obj.bijrijder.push(bijrijder._id);
+        ritIndeling.push(obj);
+        geplaatst = true;
+      } else {
+        // -- -- -- Anders: Check of passagiers minder dan maxPax is && genoeg ruimte in de auto
+        if (ritIndeling[index].bijrijder.length < maxPax && ritIndeling[index].bijrijder.length < rijder.seats - 1) {
+          // -- -- -- -- Zo ja: Plaatsen
+          ritIndeling[index].bijrijder.push(bijrijder._id);
+          geplaatst = true;
+        }
+      }
+    }
+    // Als niets getriggerd heeft. Volgende bekijken
+    i++;
+    // als i groter dan length rijders, toestaan +1 passagier
+    if (i >= scoreArray.length) {
+      maxPax++;
+      i = 0;
     }
   }
 }
 
+function maakRonde() {
+  bijrijdersMan.forEach(bijrijder => plaatsen(bijrijder));
+  bijrijdersVrouw.forEach(bijrijder => plaatsen(bijrijder));
+  console.log(ritIndeling);
+}
 // Ronde naar database schrijven

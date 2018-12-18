@@ -5,14 +5,11 @@ var deelnemerSchema = new mongoose.Schema({
   gender: String,
   age: Number,
   driver: String,
-  seats: Number,
-  phone: String,
+  seats: { type: Number, default: 2 },
+  phone: { type: String, default: 0 },
   present: { type: String, default: 'aanwezig' },
   doubled: { type: Number, default: 0 },
-  partners: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Deelnemer'
-  }
+  partners: { type: Array, default: [] }
 });
 
 module.exports = mongoose.model('Deelnemer', deelnemerSchema);
