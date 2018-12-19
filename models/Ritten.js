@@ -2,7 +2,7 @@ var mongoose = require('mongoose'),
   Deelnemer = require('./Deelnemer');
 
 var rittenSchema = new mongoose.Schema({
-  ritten: { type: Array }
+  rit: { type: Array }
 });
 
-module.exports = mongoose.model('Ritten', rittenSchema);
+module.exports = mongoose.model('Rit', rittenSchema);

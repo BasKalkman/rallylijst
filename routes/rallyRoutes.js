@@ -1,7 +1,8 @@
 var express = require('express'),
   router = express.Router({ mergeParams: true }),
   Deelnemer = require('../models/Deelnemer'),
-  requireLogin = require('../requireLogin');
+  requireLogin = require('../requireLogin'),
+  indeling = require('../indelingFunctions');
 
 // DEELNEMERSLIJST
 router.get('/deelnemers', requireLogin, (req, res) => {
@@ -82,6 +83,18 @@ router.post('/verwerkIndeling', requireLogin, (req, res) => {
   });
   let indeling = req.body;
   res.json(indeling);
+});
+
+// Indeling maken
+// TODO: Naar DB schrijven
+// TODO: Rit opslaan
+// TODO: Vertoningspagina maken
+router.get('/maakIndeling', requireLogin, (req, res) => {
+  Deelnemer.find({ present: 'aanwezig' }, (err, deelnemers) => {
+    let ritIndeling = indeling.maken(deelnemers);
+    console.log(ritIndeling);
+    res.send(ritIndeling);
+  });
 });
 
 module.exports = router;
