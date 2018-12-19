@@ -4,6 +4,11 @@
 // - requireLogin middleware op alle routes
 // - rallySession key naar env
 
+// TODO
+// - Ronde maken op backend
+// - Opslaan om later te vertonen. State management? fs? naar DB?
+// - Init van activiteit, alles leeg maken en DB aanmaken
+
 // MODULES
 var express = require('express'),
   app = express(),
@@ -12,9 +17,7 @@ var express = require('express'),
   methodOverride = require('method-override'),
   bcrypt = require('bcryptjs'),
   session = require('client-sessions'),
-  seed = require('./seed'),
-  requireLogin = require('./requireLogin'),
-  requireAdmin = require('./requireAdmin');
+  seed = require('./seed');
 
 // ENV
 require('dotenv').config();

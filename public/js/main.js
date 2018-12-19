@@ -181,11 +181,9 @@ function verstuur() {
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4) {
       var str = xhr.response;
-      console.log(JSON.parse(str));
       toonIndeling(str);
     }
   };
-  console.log('verstuurd');
 }
 
 // Toon indeling op pagina
@@ -195,9 +193,9 @@ function toonIndeling(str) {
   while (table.firstChild) {
     table.removeChild(table.firstChild);
   }
-  console.log('table removed');
 
   let data = JSON.parse(str);
+  console.log(data);
 
   // Recreate Header
   var thead = document.createElement('thead');
