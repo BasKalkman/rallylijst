@@ -1,6 +1,7 @@
 var express = require('express'),
   router = express.Router({ mergeParams: true }),
   Deelnemer = require('../models/Deelnemer'),
+  Rit = require('../models/Ritten'),
   requireLogin = require('../requireLogin'),
   indeling = require('../indelingFunctions');
 
@@ -32,13 +33,15 @@ router.get('/indeling', requireLogin, (req, res) => {
 
 // SHOW - Overzicht deelnemers gegevens
 router.get('/deelnemer/:id', requireLogin, (req, res) => {
-  Deelnemer.findOne({ _id: req.params.id }, (err, deelnemer) => {
-    if (err) {
-      console.log('Fout bij ophalen deelnemer');
-    } else {
-      res.render('deelnemer', { deelnemer: deelnemer });
-    }
-  });
+  Deelnemer.findOne({ _id: req.params.id })
+    .populate('partners')
+    .exec((err, deelnemer) => {
+      if (err) {
+        console.log('Fout bij ophalen deelnemer');
+      } else {
+        res.render('deelnemer', { deelnemer: deelnemer });
+      }
+    });
 });
 
 // UPDATE DEELNEMER - Naam, leeftijd, vooral aanwezigheid
@@ -91,9 +94,23 @@ router.post('/verwerkIndeling', requireLogin, (req, res) => {
 // TODO: Vertoningspagina maken
 router.get('/maakIndeling', requireLogin, (req, res) => {
   Deelnemer.find({ present: 'aanwezig' }, (err, deelnemers) => {
+    // Indeling maken. Functies in indelingFuncties.js
     let ritIndeling = indeling.maken(deelnemers);
-    console.log(ritIndeling);
-    res.send(ritIndeling);
+    // DB Updaten wie bij wie in de auto zat.
+    ritIndeling.forEach(auto => {
+      Deelnemer.findOneAndUpdate(
+        { _id: auto.rijder._id },
+        { $push: { partners: { $each: auto.bijrijder } } },
+        err => {}
+      );
+      auto.bijrijder.forEach(bijrijder => {
+        Deelnemer.findOneAndUpdate({ _id: bijrijder._id }, { $push: { partners: auto.rijder } }, err => {});
+      });
+    });
+    // Ritindeling naar DB schrijven om later te bekijken
+
+    // Pagina laden en indeling tonen
+    res.render('indeling', { indeling: ritIndeling });
   });
 });
 

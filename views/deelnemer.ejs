@@ -63,4 +63,12 @@
 
 </form>
 
+<div>
+    <ul>
+<% deelnemer.partners.forEach(partner => { %>
+    <li><%= partner.name %></li>
+<% }) %>
+    </ul>
+</div>
+
 <% include ./partials/footer %>

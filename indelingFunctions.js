@@ -3,6 +3,8 @@ module.exports = {
   rijdersVrouw: [],
   bijrijders: [],
   ritIndeling: [],
+
+  // INIT ronde maken
   maken: function(data) {
     this.rijdersMan = [];
     this.rijdersvrouw = [];
@@ -24,6 +26,7 @@ module.exports = {
     return this.ritIndeling;
   },
 
+  // INdeling maken op basis van kwaliteitsscore van paar
   checkScore: function(bijrijder) {
     // Indeling op score
     // Score maken van alle rijders bij gegeven bijrijder
@@ -49,6 +52,7 @@ module.exports = {
     return scoreArray;
   },
 
+  // Bijrijder plaatsen
   plaatsen: function(bijrijder) {
     let scoreArray = this.checkScore(bijrijder);
     let geplaatst = false;

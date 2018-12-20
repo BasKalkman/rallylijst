@@ -1,14 +1,15 @@
 <% include ./partials/header %>
-<% var user = deelnemers %>
+<% if (!indeling) { var indeling = [] } %>
 
-
-<a href="/reseed">Reseed</a> - <a href="#" onClick="maakRonde()">Maak indeling</a>
+<a href="/reseed">Reseed</a> - <a href="/maakIndeling">Maak indeling</a>
 
 <div>
   <span id="waarschuwing"></span>
   <ul id="indelingOverzicht">
   </ul>
 </div>
+
+
 
 <div id="indelingDiv">
   <table class="table" id="indelingTable">
@@ -20,6 +21,20 @@
         Bijrijder(s)
       </th>
     </thead>
+    <tbody>
+    <% indeling.forEach(auto => { %>
+      <tr>
+        <td><%= auto.rijder.name %></td>
+        <td>
+          <ul>
+            <% auto.bijrijder.forEach(bijrijder => { %>
+              <li><%= bijrijder.name %></li>
+            <% }) %>
+          </ul>
+        </td>
+      </tr>
+    <% }) %>
+    </tbody>
   </table>
 </div>
 
