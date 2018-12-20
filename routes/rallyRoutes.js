@@ -68,26 +68,6 @@ router.get('/ophalen', requireLogin, (req, res) => {
     });
 });
 
-// Indeling verwerken in DB
-router.post('/verwerkIndeling', requireLogin, (req, res) => {
-  req.body.forEach(auto => {
-    Deelnemer.findOne({ _id: auto.rijder._id }, (err, rijder) => {
-      auto.bijrijder.forEach(bijrijder => {
-        rijder.partners.push(bijrijder);
-      });
-      rijder.save();
-    });
-    auto.bijrijder.forEach(bijrijder => {
-      Deelnemer.findOne({ _id: bijrijder._id }, (err, bijrijder) => {
-        bijrijder.partners.push(auto.rijder);
-        bijrijder.save();
-      });
-    });
-  });
-  let indeling = req.body;
-  res.json(indeling);
-});
-
 // Indeling maken
 // TODO: Naar DB schrijven
 // TODO: Rit opslaan

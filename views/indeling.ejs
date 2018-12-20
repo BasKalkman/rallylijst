@@ -10,7 +10,6 @@
 </div>
 
 
-
 <div id="indelingDiv">
   <table class="table" id="indelingTable">
     <thead class="thead-dark">
@@ -24,16 +23,18 @@
     <tbody>
     <% indeling.forEach(auto => { %>
       <tr>
-        <td><%= auto.rijder.name %></td>
-        <td>
-          <ul>
-            <% auto.bijrijder.forEach(bijrijder => { %>
-              <li><%= bijrijder.name %></li>
-            <% }) %>
-          </ul>
-        </td>
+      <td><%= auto.rijder.name %></td>
+      <td>
+        <ul>
+          <% auto.bijrijder.forEach(bijrijder => { %>
+            <li><%=bijrijder.name %></li>
+          <% }) %>
+        </ul>
+      </td>
       </tr>
+
     <% }) %>
+    
     </tbody>
   </table>
 </div>

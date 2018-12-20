@@ -1,6 +1,7 @@
 var faker = require('faker/locale/nl');
 var Deelnemer = require('./models/Deelnemer');
 var User = require('./models/User');
+var Rit = require('./models/Ritten');
 var bcrypt = require('bcryptjs');
 
 module.exports = {
@@ -17,6 +18,10 @@ module.exports = {
   },
 
   seedDB: function() {
+    Rit.remove({}, function(err) {
+      console.log('Nieuwe Ritten');
+    });
+    Rit.create({}, function(err) {});
     Deelnemer.remove({}, function(err) {
       console.log('Dropped table');
     });
