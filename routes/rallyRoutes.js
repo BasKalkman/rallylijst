@@ -3,7 +3,8 @@ var express = require('express'),
   Deelnemer = require('../models/Deelnemer'),
   Rit = require('../models/Ritten'),
   requireLogin = require('../requireLogin'),
-  indeling = require('../indelingFunctions');
+  indeling = require('../indelingFunctions'),
+  fs = require('fs');
 
 // DEELNEMERSLIJST
 router.get('/deelnemers', requireLogin, (req, res) => {
