@@ -1,20 +1,6 @@
 <% include ./partials/header %>
 
-
-<a href="/reseed">Reseed</a> - <a href="/maakIndeling">Maak indeling</a>
-
-<div>
-  <span id="waarschuwing"></span>
-  <ul id="indelingOverzicht">
-  </ul>
-</div>
-
-<div>
-<h5>Ronde</h5>
-<% for (let i = 1; i <= numRondes; i++) { %>
-<a href="/bekijkIndeling/<%=i%>"><%= i %></a> -&nbsp;
-<% } %>
-</div>
+<h5>Ronde <%= rondeNummer %></h5>
 
 <div id="indelingDiv">
   <table class="table" id="indelingTable">
@@ -29,11 +15,11 @@
     <tbody>
     <% indeling.forEach(auto => { %>
       <tr>
-      <td><%= auto.rijder.name %></td>
+      <td><a href="/deelnemer/<%= auto.rijder._id %>"><%= auto.rijder.name %></a></td>
       <td>
         <ul>
           <% auto.bijrijder.forEach(bijrijder => { %>
-            <li><%=bijrijder.name %></li>
+            <li><a href="/deelnemer/<%= bijrijder._id %>"><%=bijrijder.name %></a></li>
           <% }) %>
         </ul>
       </td>
@@ -44,7 +30,5 @@
     </tbody>
   </table>
 </div>
-
-<script src="/js/main.js"></script>
 
 <% include ./partials/footer %>

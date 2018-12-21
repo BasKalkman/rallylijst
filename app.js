@@ -5,10 +5,7 @@
 // - rallySession key naar env
 
 // TODO
-// - Ronde maken op backend
-// - Opslaan om later te vertonen. State management? fs? naar DB?
 // - Init van activiteit, alles leeg maken en DB aanmaken
-// - Check of update Deelnemer (bv afwezig) bijrijders verwijdert
 
 // MODULES
 var express = require('express'),

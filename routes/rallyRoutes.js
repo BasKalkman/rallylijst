@@ -20,15 +20,33 @@ router.get('/deelnemers', requireLogin, (req, res) => {
 
 // AUTO INDELING
 router.get('/indeling', requireLogin, (req, res) => {
-  Deelnemer.find({ present: 'aanwezig' })
-    .sort({ age: 1 })
-    .exec(function(err, deelnemers) {
-      if (err) {
-        console.log('Er ging iets mis met aanwezige deelnemers');
-      } else {
-        res.render('indeling', { deelnemers: deelnemers });
-      }
-    });
+  Rit.findOne({}, (err, ritten) => {
+    let ritIndeling = [];
+    let numRondes = 0;
+    if (!err && ritten.rit.length !== 0) {
+      ritIndeling = JSON.parse(ritten.rit[ritten.rit.length - 1]);
+      numRondes = ritten.rit.length;
+    }
+
+    Deelnemer.find({ present: 'aanwezig' })
+      .sort({ age: 1 })
+      .exec(function(err, deelnemers) {
+        if (err) {
+          console.log('Er ging iets mis met aanwezige deelnemers');
+        } else {
+          res.render('indeling', { deelnemers: deelnemers, indeling: ritIndeling, numRondes: numRondes });
+        }
+      });
+  });
+});
+
+// BEKIJK RONDE
+router.get('/bekijkIndeling/:id', requireLogin, (req, res) => {
+  Rit.findOne({}, (err, ritten) => {
+    let rondeNummer = req.params.id;
+    let indeling = JSON.parse(ritten.rit[req.params.id - 1]);
+    res.render('ronde', { indeling: indeling, rondeNummer: rondeNummer });
+  });
 });
 
 // SHOW - Overzicht deelnemers gegevens
@@ -69,8 +87,6 @@ router.get('/ophalen', requireLogin, (req, res) => {
 });
 
 // Indeling maken
-// TODO: Naar DB schrijven
-// TODO: Rit opslaan
 // TODO: Vertoningspagina maken
 router.get('/maakIndeling', requireLogin, (req, res) => {
   Deelnemer.find({ present: 'aanwezig' }, (err, deelnemers) => {
@@ -88,9 +104,15 @@ router.get('/maakIndeling', requireLogin, (req, res) => {
       });
     });
     // Ritindeling naar DB schrijven om later te bekijken
-
+    let pushIndeling = JSON.stringify(ritIndeling);
+    Rit.findOne({}, (err, ritten) => {
+      if (!err) {
+        ritten.rit.push(pushIndeling);
+        ritten.save();
+      }
+    });
     // Pagina laden en indeling tonen
-    res.render('indeling', { indeling: ritIndeling });
+    res.redirect('/indeling');
   });
 });
 
