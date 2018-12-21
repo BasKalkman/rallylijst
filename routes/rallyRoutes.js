@@ -23,9 +23,15 @@ router.get('/indeling', requireLogin, (req, res) => {
   Rit.findOne({}, (err, ritten) => {
     let ritIndeling = [];
     let numRondes = 0;
+    let numRijders = 0;
+    let numBijrijders = 0;
     if (!err && ritten.rit.length !== 0) {
       ritIndeling = JSON.parse(ritten.rit[ritten.rit.length - 1]);
       numRondes = ritten.rit.length;
+      ritIndeling.forEach(auto => {
+        numRijders++;
+        numBijrijders += auto.bijrijder.length;
+      });
     }
 
     Deelnemer.find({ present: 'aanwezig' })
@@ -34,7 +40,13 @@ router.get('/indeling', requireLogin, (req, res) => {
         if (err) {
           console.log('Er ging iets mis met aanwezige deelnemers');
         } else {
-          res.render('indeling', { deelnemers: deelnemers, indeling: ritIndeling, numRondes: numRondes });
+          res.render('indeling', {
+            deelnemers: deelnemers,
+            indeling: ritIndeling,
+            numRondes: numRondes,
+            numRijders: numRijders,
+            numBijrijders: numBijrijders
+          });
         }
       });
   });
@@ -44,8 +56,19 @@ router.get('/indeling', requireLogin, (req, res) => {
 router.get('/bekijkIndeling/:id', requireLogin, (req, res) => {
   Rit.findOne({}, (err, ritten) => {
     let rondeNummer = req.params.id;
+    let numRijders = 0;
+    let numBijrijders = 0;
     let indeling = JSON.parse(ritten.rit[req.params.id - 1]);
-    res.render('ronde', { indeling: indeling, rondeNummer: rondeNummer });
+    indeling.forEach(auto => {
+      numRijders++;
+      numBijrijders += auto.bijrijder.length;
+    });
+    res.render('ronde', {
+      indeling: indeling,
+      rondeNummer: rondeNummer,
+      numRijders: numRijders,
+      numBijrijders: numBijrijders
+    });
   });
 });
 

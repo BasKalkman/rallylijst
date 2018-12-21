@@ -4,13 +4,16 @@
 <a href="/reseed">Reseed</a> - <a href="/maakIndeling">Maak indeling</a>
 
 <div>
-  <span id="waarschuwing"></span>
-  <ul id="indelingOverzicht">
-  </ul>
+<span id="waarschuwing"></span>
+<ul id="indelingOverzicht">
+</ul>
 </div>
 
-<div>
 <h5>Ronde</h5>
+<p>Geplaatst: <br>
+Rijders: <%= numRijders %> - Bijrijders: <%= numBijrijders %></p>
+
+<div>
 <% for (let i = 1; i <= numRondes; i++) { %>
 <a href="/bekijkIndeling/<%=i%>"><%= i %></a> -&nbsp;
 <% } %>
@@ -29,11 +32,11 @@
     <tbody>
     <% indeling.forEach(auto => { %>
       <tr>
-      <td><%= auto.rijder.name %></td>
+      <td><a href="/deelnemer/<%=auto.rijder._id%>"></a> <%= auto.rijder.name %></td>
       <td>
         <ul>
           <% auto.bijrijder.forEach(bijrijder => { %>
-            <li><%=bijrijder.name %></li>
+            <li><a href="/deelnemer/<% bijrijder._id %>"></a> <%=bijrijder.name %></li>
           <% }) %>
         </ul>
       </td>
