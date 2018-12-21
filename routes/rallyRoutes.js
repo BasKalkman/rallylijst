@@ -33,22 +33,29 @@ router.get('/indeling', requireLogin, (req, res) => {
         numBijrijders += auto.bijrijder.length;
       });
     }
+    res.render('indeling', {
+      indeling: ritIndeling,
+      numRondes: numRondes,
+      numRijders: numRijders,
+      numBijrijders: numBijrijders
+    });
 
-    Deelnemer.find({ present: 'aanwezig' })
-      .sort({ age: 1 })
-      .exec(function(err, deelnemers) {
-        if (err) {
-          console.log('Er ging iets mis met aanwezige deelnemers');
-        } else {
-          res.render('indeling', {
-            deelnemers: deelnemers,
-            indeling: ritIndeling,
-            numRondes: numRondes,
-            numRijders: numRijders,
-            numBijrijders: numBijrijders
-          });
-        }
-      });
+    // Onderstaande DB query is volgens mij niet meer nodig. Nog even laten staan tot doorgetest
+    // Deelnemer.find({ present: 'aanwezig' })
+    //   .sort({ age: 1 })
+    //   .exec(function(err, deelnemers) {
+    //     if (err) {
+    //       console.log('Er ging iets mis met aanwezige deelnemers');
+    //     } else {
+    //       res.render('indeling', {
+    //         deelnemers: deelnemers,
+    //         indeling: ritIndeling,
+    //         numRondes: numRondes,
+    //         numRijders: numRijders,
+    //         numBijrijders: numBijrijders
+    //       });
+    //     }
+    //   });
   });
 });
 
