@@ -13,11 +13,13 @@
   <input type="submit" value="Update" class="btn btn-primary">
 </form>
 
+<% if (gebruiker.name !== 'Admin') { %>
 <p>
   <form action="/user/<%= gebruiker._id %>?_method=DELETE" method="POST">
     <input type="submit" value="VERWIJDER" class="btn btn-danger">
   </form>
 </p>
+<% } %>
 
     
 <% include ./partials/footer %>
