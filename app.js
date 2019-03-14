@@ -15,16 +15,16 @@ var express = require('express'),
   methodOverride = require('method-override'),
   bcrypt = require('bcryptjs'),
   session = require('client-sessions'),
-  seed = require('./seed');
+  seed = require('./seed'),
+  requireLogin = require('./requireLogin'),
+  formidableMiddleware = require('express-formidable'),
+  fs = require('fs');
 
 // ENV
 require('dotenv').config();
 
 // MONGOOSE
-mongoose.connect(
-  process.env.DB_TEST,
-  { useNewUrlParser: true }
-);
+mongoose.connect(process.env.DB_TEST, { useNewUrlParser: true });
 
 // MODELS
 var Deelnemer = require('./models/Deelnemer');
@@ -40,6 +40,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(methodOverride('_method'));
 app.use(express.static(__dirname + '/public'));
+app.use(
+  formidableMiddleware({
+    encoding: 'utf-8',
+    uploadDir: './tmp'
+  })
+);
 
 // COOKIE SETTINGS
 app.use(
@@ -76,6 +82,18 @@ app.use(rallyRoutes);
 
 // LOGIN / LOGOUT
 app.use(authRoutes);
+
+// CSV
+app.get('/uploadCSV', requireLogin, (req, res) => {
+  res.render('uploadCSV');
+});
+
+app.post('/uploadCSV', requireLogin, (req, res) => {
+  console.log(req.files.file.path);
+  let test = req.files.file.path;
+  let meh = fs.readFileSync(test, 'utf-8');
+  console.log(meh);
+});
 
 // 404
 app.get('*', (req, res) => {

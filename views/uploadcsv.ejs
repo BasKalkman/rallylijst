@@ -1,0 +1,10 @@
+<% include ./partials/header %>
+
+<h3>Upload CSV</h3>
+
+<form method='POST' action='/uploadCSV' enctype="multipart/form-data">
+  <input type="file" name="file" id="fileInput" />
+  <input type="submit" value="Upload" class="btn btn-primary">
+</form>
+
+<% include ./partials/footer %>
