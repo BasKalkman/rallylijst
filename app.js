@@ -33,6 +33,7 @@ var User = require('./models/User');
 // ROUTES
 var authRoutes = require('./routes/authRoutes');
 var rallyRoutes = require('./routes/rallyRoutes');
+var csvRoutes = require('./routes/csvRoutes');
 
 // EXPRESS CONFIG
 app.set('view engine', 'ejs');
@@ -77,23 +78,14 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
+// CSV UPLOAD ROUTES
+app.use(csvRoutes);
+
 // RALLY ROUTES
 app.use(rallyRoutes);
 
 // LOGIN / LOGOUT
 app.use(authRoutes);
-
-// CSV
-app.get('/uploadCSV', requireLogin, (req, res) => {
-  res.render('uploadCSV');
-});
-
-app.post('/uploadCSV', requireLogin, (req, res) => {
-  console.log(req.files.file.path);
-  let test = req.files.file.path;
-  let meh = fs.readFileSync(test, 'utf-8');
-  console.log(meh);
-});
 
 // 404
 app.get('*', (req, res) => {
