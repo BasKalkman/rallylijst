@@ -10,6 +10,7 @@
 // MODULES
 var express = require('express'),
   app = express(),
+  formidableMiddleware = require('express-formidable'),
   bodyParser = require('body-parser'),
   mongoose = require('mongoose'),
   methodOverride = require('method-override'),
@@ -17,7 +18,6 @@ var express = require('express'),
   session = require('client-sessions'),
   seed = require('./seed'),
   requireLogin = require('./requireLogin'),
-  formidableMiddleware = require('express-formidable'),
   fs = require('fs');
 
 // ENV
@@ -41,12 +41,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(methodOverride('_method'));
 app.use(express.static(__dirname + '/public'));
-app.use(
-  formidableMiddleware({
-    encoding: 'utf-8',
-    uploadDir: './tmp'
-  })
-);
+// app.use(
+//   formidableMiddleware({
+//     uploadDir: './tmp'
+//   })
+// );
 
 // COOKIE SETTINGS
 app.use(

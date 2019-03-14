@@ -29,6 +29,7 @@ router.post('/register', requireLogin, requireAdmin, (req, res) => {
 });
 
 router.post('/login', (req, res) => {
+  console.log(req.fields);
   User.findOne({ name: req.body.user.name }, function(err, user) {
     if (err) {
       console.log('Kon gebruiker niet vinden of ophalen');
